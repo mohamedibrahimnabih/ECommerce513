@@ -30,3 +30,10 @@ body {
   text-align: start;
 }
 
+.footer {
+    line-height: 100px !important;
+}
+
+a {
+    color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+}

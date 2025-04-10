@@ -1,5 +1,4 @@
-﻿using ECommerce513.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce513.Controllers
 {
