@@ -1,0 +1,10 @@
+﻿<h1>Hello @Model.Name</h1>
+<h2>Your Age: @Model.Age</h2>
+<h3>Your Address: @Model.Address</h3>
+
+<h4>Skills
+    @foreach (var item in Model.Skills)
+    {
+        <li>@item</li>
+    }
+</h4>
