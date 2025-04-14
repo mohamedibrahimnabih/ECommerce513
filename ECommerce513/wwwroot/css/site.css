@@ -34,6 +34,6 @@ body {
     line-height: 100px !important;
 }
 
-a {
+nav a {
     color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
 }
