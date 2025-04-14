@@ -17,20 +17,32 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index(FilterItemsVM filterItemsVM)
+    public IActionResult Index(FilterItemsVM filterItemsVM, int page = 1)
     {
+        #region Queries
         IQueryable<Product> products = _context.Products.Include(e => e.Category);
-        var categories = _context.Categories;
+        var categories = _context.Categories; 
+        #endregion
 
-
-        if(filterItemsVM.ProductName is not null)
+        #region Filter Bar
+        if (filterItemsVM.ProductName is not null)
         {
             products = products.Where(e => e.Name.Contains(filterItemsVM.ProductName));
         }
 
-        if(filterItemsVM.CategoryId > 0 && filterItemsVM.CategoryId <= categories.Count())
+        if (filterItemsVM.CategoryId > 0 && filterItemsVM.CategoryId <= categories.Count())
         {
             products = products.Where(e => e.CategoryId == filterItemsVM.CategoryId);
+        }
+
+        if (filterItemsVM.MinPrice > 0)
+        {
+            products = products.Where(e => (e.Price - (e.Price * e.Discount / 100)) > filterItemsVM.MinPrice);
+        }
+
+        if (filterItemsVM.MaxPrice > 0)
+        {
+            products = products.Where(e => (e.Price - (e.Price * e.Discount / 100)) < filterItemsVM.MaxPrice);
         }
 
         //ViewData["ProductName"] = filterItemsVM.ProductName;
@@ -40,12 +52,19 @@ public class HomeController : Controller
         //ViewData["CategoryId"] = filterItemsVM.CategoryId;
 
         //ViewData["FilterItemsVM"] = filterItemsVM;
+        #endregion
+
+        #region Pagination
+        var totalPageNumber = Math.Ceiling(products.Count() / 8.0); 
+        products = products.Skip((page - 1) * 8).Take(8);
+        #endregion
 
         ProductWithFilterVM productWithFilterVM = new()
         {
             Products = products.ToList(),
             Categories = categories.ToList(),
-            FilterItemsVM = filterItemsVM
+            FilterItemsVM = filterItemsVM,
+            TotalPageNumber = totalPageNumber
         };
 
         return View(productWithFilterVM);
