@@ -17,11 +17,38 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(FilterItemsVM filterItemsVM)
     {
-        var products = _context.Products.Include(e => e.Category);
+        IQueryable<Product> products = _context.Products.Include(e => e.Category);
+        var categories = _context.Categories;
 
-        return View(products.ToList());
+
+        if(filterItemsVM.ProductName is not null)
+        {
+            products = products.Where(e => e.Name.Contains(filterItemsVM.ProductName));
+        }
+
+        if(filterItemsVM.CategoryId > 0 && filterItemsVM.CategoryId <= categories.Count())
+        {
+            products = products.Where(e => e.CategoryId == filterItemsVM.CategoryId);
+        }
+
+        //ViewData["ProductName"] = filterItemsVM.ProductName;
+        //ViewBag.ProductName = filterItemsVM.ProductName;
+        //ViewData["MinPrice"] = filterItemsVM.MinPrice;
+        //ViewData["MaxPrice"] = filterItemsVM.MaxPrice;
+        //ViewData["CategoryId"] = filterItemsVM.CategoryId;
+
+        //ViewData["FilterItemsVM"] = filterItemsVM;
+
+        ProductWithFilterVM productWithFilterVM = new()
+        {
+            Products = products.ToList(),
+            Categories = categories.ToList(),
+            FilterItemsVM = filterItemsVM
+        };
+
+        return View(productWithFilterVM);
     }
 
     public IActionResult Details(int id)
@@ -34,11 +61,14 @@ public class HomeController : Controller
 
             var topProducts = _context.Products.Include(e => e.Category).Where(e => e.Id != product.Id).OrderByDescending(e => e.Traffic).Skip(0).Take(4);
 
+            var sameCategoryProducts = _context.Products.Include(e => e.Category).Where(e => e.CategoryId == product.CategoryId && e.Id != product.Id).Skip(0).Take(4);
+
             ProductWithRelatedVM productWithRelated = new()
             {
                 Product = product,
                 RelatedProducts = relatedProducts.ToList(),
-                TopProducts = topProducts.ToList()
+                TopProducts = topProducts.ToList(),
+                SameCategoryProducts = sameCategoryProducts.ToList()
             };
 
             product.Traffic++;

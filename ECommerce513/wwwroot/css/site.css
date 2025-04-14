@@ -37,3 +37,7 @@ body {
 nav a {
     color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
 }
+
+.filter-bar {
+    background-color: #f3f3f3;
+}
