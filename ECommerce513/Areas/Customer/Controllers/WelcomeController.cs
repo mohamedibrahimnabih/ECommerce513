@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace ECommerce513.Controllers
+namespace ECommerce513.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class WelcomeController : Controller
     {
         public IActionResult Index()

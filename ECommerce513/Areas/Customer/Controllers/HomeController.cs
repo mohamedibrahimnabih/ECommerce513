@@ -5,8 +5,9 @@ using ECommerce513.Data;
 using Microsoft.EntityFrameworkCore;
 using ECommerce513.Models.ViewModels;
 
-namespace ECommerce513.Controllers;
+namespace ECommerce513.Areas.Customer.Controllers;
 
+[Area("Customer")]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -37,12 +38,12 @@ public class HomeController : Controller
 
         if (filterItemsVM.MinPrice > 0)
         {
-            products = products.Where(e => (e.Price - (e.Price * e.Discount / 100)) > filterItemsVM.MinPrice);
+            products = products.Where(e => e.Price - e.Price * e.Discount / 100 > filterItemsVM.MinPrice);
         }
 
         if (filterItemsVM.MaxPrice > 0)
         {
-            products = products.Where(e => (e.Price - (e.Price * e.Discount / 100)) < filterItemsVM.MaxPrice);
+            products = products.Where(e => e.Price - e.Price * e.Discount / 100 < filterItemsVM.MaxPrice);
         }
 
         //ViewData["ProductName"] = filterItemsVM.ProductName;
