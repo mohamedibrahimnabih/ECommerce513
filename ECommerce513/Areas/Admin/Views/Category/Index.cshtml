@@ -49,8 +49,8 @@
                                 <td><span class="badge text-bg-danger">@item.Status</span></td>
                             }
                             <td>
-                                <a href="#" type="button" class="btn btn-warning">Edit</a>
-                                <a href="#" type="button" class="btn btn-danger">Delete</a>
+                                <a href="/Admin/Category/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
+                                <a href="javascript:;" class="btn btn-danger btn-delete" data-id="@item.Id">Delete</a>
                             </td>
                         </tr>
                     }
@@ -59,3 +59,29 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.btn-delete');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const categoryId = this.getAttribute('data-id');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/Admin/Category/Delete/${categoryId}`;
+                    }
+                });
+            });
+        });
+    });
+</script>
