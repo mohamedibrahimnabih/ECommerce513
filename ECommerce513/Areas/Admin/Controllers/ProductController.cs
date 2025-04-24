@@ -4,6 +4,7 @@ using ECommerce513.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Mono.TextTemplating;
 using System.IO;
 
@@ -135,10 +136,41 @@ namespace ECommerce513.Areas.Admin.Controllers
 
             if (product is not null)
             {
+                // Delete old img from wwwroot
+                var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", product.MainImg);
+
+                if (System.IO.File.Exists(oldPath))
+                {
+                    System.IO.File.Delete(oldPath);
+                }
+
                 _context.Products.Remove(product);
                 _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction("NotFoundPage", "Home");
+        }
+
+        public IActionResult DeleteImg(int id)
+        {
+            var product = _context.Products.Find(id);
+
+            if (product is not null)
+            {
+                // Delete old img from wwwroot
+                var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", product.MainImg);
+
+                if (System.IO.File.Exists(oldPath))
+                {
+                    System.IO.File.Delete(oldPath);
+                }
+
+                product.MainImg = "default-img.png";
+                _context.SaveChanges();
+
+                return RedirectToAction(nameof(Edit), new { id = id });
             }
 
             return RedirectToAction("NotFoundPage", "Home");

@@ -27,6 +27,13 @@
                          alt="Image Preview"
                          class="img-thumbnail mt-2"
                          style="@(string.IsNullOrEmpty(Model.MainImg) ? "display: none;" : "display: block;") max-height: 200px;" />
+                    <a href="/Admin/Product/DeleteImg/@Model.Id">
+                        <div class="btn btn-danger my-3">Delete
+                        </div>
+                    </a>
+                    <a href="">
+                        <div class="btn btn-warning my-3">Replace</div>
+                    </a>
                 </div>
 
                 <div class="mb-3">
