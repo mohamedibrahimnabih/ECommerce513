@@ -1,0 +1,92 @@
+﻿@model Product
+
+<div class="container">
+    <div class="row mb-3 align-items-center my-3">
+        <div class="col-12">
+            <h2 class="display-6">Create New Product</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <form method="post">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Name" name="Name" value="@Model.Name">
+                </div>
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" style="height: 100px" name="Description">@Model.Description</textarea>
+                    <label for="floatingTextarea">Description</label>
+                </div>
+                <div class="mb-3">
+                    <label for="MainImg" class="form-label">Main Img</label>
+                    <input type="text" class="form-control" id="MainImg" name="MainImg" value="@Model.MainImg">
+                </div>
+                <div class="mb-3">
+                    <label for="Price" class="form-label">Price</label>
+                    <input type="number" class="form-control" id="Price" placeholder="Price" name="Price" value="@Model.Price">
+                </div>
+                <div class="mb-3">
+                    <label for="Quantity" class="form-label">Quantity</label>
+                    <input type="number" class="form-control" id="Quantity" placeholder="Quantity" name="Quantity" value="@Model.Quantity">
+                </div>
+                <div class="mb-3">
+                    <label for="Discount" class="form-label">Discount</label>
+                    <input type="number" class="form-control" id="Discount" placeholder="Discount" name="Discount" value="@Model.Discount">
+                </div>
+                <div class="mb-3">
+                    <label for="CategoryId" class="form-label">CategoryId</label>
+                    @* <input type="number" class="form-control" id="CategoryId" placeholder="CategoryId" name="CategoryId"> *@
+                    <select class="form-select" name="CategoryId">
+                        @foreach (var item in ViewBag.categories)
+                        {
+                            if(item.Id == Model.CategoryId)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="BrandId" class="form-label">BrandId</label>
+                    @* <input type="number" class="form-control" id="BrandId" placeholder="BrandId" name="BrandId"> *@
+                    <select class="form-select" name="BrandId">
+                        @if (ViewData["brands"] is List<Brand> brands)
+                        {
+                            @foreach (var item in brands)
+                            {
+                                if (item.Id == Model.BrandId)
+                                {
+                                    <option value="@item.Id" selected>@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select name="Status" class="form-select" id="status">
+                        <option value="true">ON</option>
+                        @if (!Model.Status)
+                        {
+                            <option value="false" selected>OFF</option>
+                        }
+                        else
+                        {
+                            <option value="false">OFF</option>
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mb-3">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
