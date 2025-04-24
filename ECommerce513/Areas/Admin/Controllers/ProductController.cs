@@ -1,9 +1,11 @@
 ﻿using ECommerce513.Data;
 using ECommerce513.Models;
 using ECommerce513.Models.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mono.TextTemplating;
+using System.IO;
 
 namespace ECommerce513.Areas.Admin.Controllers
 {
@@ -44,11 +46,26 @@ namespace ECommerce513.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Product product)
+        public IActionResult Create(Product product, IFormFile? MainImg)
         {
+            if (MainImg is not null && MainImg.Length > 0)
+            {
+                // Add file to wwwroot
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(MainImg.FileName);
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
+
+                using (var stream = System.IO.File.Create(path))
+                {
+                    MainImg.CopyTo(stream);
+                }
+
+                // Add file Name to product in DB
+                product.MainImg = fileName;
+            }
+
             _context.Products.Add(product);
             _context.SaveChanges();
-
             return RedirectToAction(nameof(Index));
         }
 
@@ -56,22 +73,75 @@ namespace ECommerce513.Areas.Admin.Controllers
         {
             var product = _context.Products.Find(id);
 
-            var categories = _context.Categories;
-            var brands = _context.Brands;
+            if(product is not null)
+            {
+                var categories = _context.Categories;
+                var brands = _context.Brands;
 
-            ViewBag.categories = categories.ToList();
-            ViewData["brands"] = brands.ToList();
+                ViewBag.categories = categories.ToList();
+                ViewData["brands"] = brands.ToList();
+                
+                return View(product);
+            }
 
-            return View(product);
+            return RedirectToAction("NotFoundPage", "Home");
         }
 
         [HttpPost]
-        public IActionResult Edit(Product product)
+        public IActionResult Edit(Product product, IFormFile? MainImg)
         {
+            var productInDb = _context.Products.AsNoTracking().FirstOrDefault(e => e.Id == product.Id);
+
+            if(productInDb is not null)
+            {
+                if (MainImg is not null && MainImg.Length > 0)
+                {
+                    // Add file to wwwroot
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(MainImg.FileName);
+
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
+
+                    using (var stream = System.IO.File.Create(path))
+                    {
+                        MainImg.CopyTo(stream);
+                    }
+
+                    // Delete old img from wwwroot
+                    var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", productInDb.MainImg);
+
+                    if (System.IO.File.Exists(oldPath))
+                    {
+                        System.IO.File.Delete(oldPath);
+                    }
+
+                    // Add file Name to product in DB
+                    product.MainImg = fileName;
+                }
+                else
+                {
+                    product.MainImg = productInDb.MainImg;
+                }
+            }
+
             _context.Products.Update(product);
             _context.SaveChanges();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var product = _context.Products.Find(id);
+
+            if (product is not null)
+            {
+                _context.Products.Remove(product);
+                _context.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction("NotFoundPage", "Home");
         }
     }
 }

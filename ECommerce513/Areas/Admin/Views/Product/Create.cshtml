@@ -7,7 +7,7 @@
 
     <div class="row">
         <div class="col-12">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" id="name" placeholder="Name" name="Name">
@@ -18,7 +18,8 @@
                 </div>
                 <div class="mb-3">
                     <label for="MainImg" class="form-label">Main Img</label>
-                    <input type="text" class="form-control" id="MainImg" name="MainImg">
+                    <input type="file" class="form-control" id="MainImg" name="MainImg" onchange="previewImage(event)">
+                    <img id="imgPreview" src="#" alt="Image Preview" class="img-thumbnail mt-2" style="display: none; max-height: 200px;" />
                 </div>
                 <div class="mb-3">
                     <label for="Price" class="form-label">Price</label>
@@ -67,3 +68,21 @@
         </div>
     </div>
 </div>
+
+<script>
+    function previewImage(event) {
+        const input = event.target;
+        const preview = document.getElementById('imgPreview');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
