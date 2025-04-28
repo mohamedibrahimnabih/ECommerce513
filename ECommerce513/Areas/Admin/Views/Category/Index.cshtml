@@ -4,6 +4,17 @@
     var i = 1;
 }
 
+@section Scripts {
+    @if (TempData["Notification"] is not null)
+    {
+        <script>
+            toastr.success('@TempData["Notification"]')
+        </script>
+    }
+}
+
+
+
 <div class="container">
     <div class="row mb-3 align-items-center my-3">
         <div class="col-md-6">
@@ -49,7 +60,7 @@
                                 <td><span class="badge text-bg-danger">@item.Status</span></td>
                             }
                             <td>
-                                <a href="/Admin/Category/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
+                                <a asp-action="Edit" asp-controller="Category" asp-area="Admin" asp-route-id="@item.Id" type="button" class="btn btn-warning">Edit</a>
                                 <a href="javascript:;" class="btn btn-danger btn-delete" data-id="@item.Id">Delete</a>
                             </td>
                         </tr>

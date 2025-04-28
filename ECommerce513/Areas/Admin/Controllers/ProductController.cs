@@ -1,12 +1,9 @@
 ﻿using ECommerce513.Data;
 using ECommerce513.Models;
 using ECommerce513.Models.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Mono.TextTemplating;
-using System.IO;
 
 namespace ECommerce513.Areas.Admin.Controllers
 {
@@ -40,8 +37,16 @@ namespace ECommerce513.Areas.Admin.Controllers
             var categories = _context.Categories;
             var brands = _context.Brands;
 
-            ViewBag.categories = categories.ToList();
-            ViewData["brands"] = brands.ToList();
+            ViewBag.categories = categories.ToList().Select(e => new SelectListItem
+            {
+                Text = e.Name,
+                Value = e.Id.ToString()
+            });
+            ViewBag.brands = brands.ToList().Select(e => new SelectListItem
+            {
+                Text = e.Name,
+                Value = e.Id.ToString()
+            });
 
             return View(new Product());
         }

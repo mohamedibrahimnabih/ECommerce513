@@ -12,29 +12,35 @@
             <form method="post">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Name" name="Name" value="@Model.Name">
+                    <input class="form-control" placeholder="Name" asp-for="Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
                     <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" style="height: 100px" name="Description">@Model.Description</textarea>
                     <label for="floatingTextarea">Description</label>
+                    <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="status" class="form-label">Status</label>
                     <select name="Status" class="form-select" id="status">
-                        @if(!Model.Status)
+                        <option value="true">ON</option>
+                        @if (!Model.Status)
                         {
-                            <option value="true">ON</option>
                             <option value="false" selected>OFF</option>
                         }
                         else
                         {
-                            <option value="true">ON</option>
                             <option value="false">OFF</option>
                         }
                     </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial">
+}

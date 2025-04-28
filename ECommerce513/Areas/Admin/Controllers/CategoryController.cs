@@ -22,6 +22,7 @@ namespace ECommerce513.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Category category)
         {
             if (!ModelState.IsValid)
@@ -31,6 +32,12 @@ namespace ECommerce513.Areas.Admin.Controllers
 
             _context.Categories.Add(category);
             _context.SaveChanges();
+
+            //CookieOptions cookieOptions = new();
+            //cookieOptions.Expires = DateTime.Now.AddMinutes(30);
+            //Response.Cookies.Append("Notification", "Add Product Successfully", cookieOptions);
+
+            TempData["Notification"] = "Add Product Successfully";
 
             return RedirectToAction(nameof(Index));
         }
@@ -48,6 +55,7 @@ namespace ECommerce513.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(Category category)
         {
             if(!ModelState.IsValid)
@@ -57,6 +65,8 @@ namespace ECommerce513.Areas.Admin.Controllers
 
             _context.Categories.Update(category);
             _context.SaveChanges();
+
+            TempData["Notification"] = "Update Product Successfully";
 
             return RedirectToAction(nameof(Index));
         }
@@ -69,6 +79,8 @@ namespace ECommerce513.Areas.Admin.Controllers
             {
                 _context.Categories.Remove(category);
                 _context.SaveChanges();
+
+                TempData["Notification"] = "Remove Product Successfully";
 
                 return RedirectToAction(nameof(Index));
             }
