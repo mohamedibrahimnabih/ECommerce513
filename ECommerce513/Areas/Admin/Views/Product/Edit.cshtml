@@ -13,10 +13,12 @@
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" id="name" placeholder="Name" name="Name" value="@Model.Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
                     <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" style="height: 100px" name="Description">@Model.Description</textarea>
                     <label for="floatingTextarea">Description</label>
+                    <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="MainImg" class="form-label">Main Img</label>
@@ -34,19 +36,23 @@
                     <a href="">
                         <div class="btn btn-warning my-3">Replace</div>
                     </a>
+                    <span asp-validation-for="MainImg" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label for="Price" class="form-label">Price</label>
                     <input type="number" class="form-control" id="Price" placeholder="Price" name="Price" value="@Model.Price">
+                    <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="Quantity" class="form-label">Quantity</label>
                     <input type="number" class="form-control" id="Quantity" placeholder="Quantity" name="Quantity" value="@Model.Quantity">
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="Discount" class="form-label">Discount</label>
                     <input type="number" class="form-control" id="Discount" placeholder="Discount" name="Discount" value="@Model.Discount">
+                    <span asp-validation-for="Discount" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="CategoryId" class="form-label">CategoryId</label>
@@ -63,6 +69,7 @@
                                 <option value="@item.Id">@item.Name</option>
                             }
                         }
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -84,6 +91,7 @@
                             }
                         }
                     </select>
+                    <span asp-validation-for="BrandId" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="status" class="form-label">Status</label>
@@ -98,6 +106,7 @@
                             <option value="false">OFF</option>
                         }
                     </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn btn-primary mb-3">Submit</button>
             </form>

@@ -1,4 +1,6 @@
-﻿<div class="container">
+﻿@model Category
+
+<div class="container">
     <div class="row mb-3 align-items-center my-3">
         <div class="col-12">
             <h2 class="display-6">Create New Category</h2>
@@ -10,18 +12,28 @@
             <form method="post">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Name" name="Name">
+                    <input type="text" class="form-control" id="name" placeholder="Name" name="Name" value="@Model.Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" style="height: 100px" name="Description"></textarea>
+                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" style="height: 100px" name="Description">@Model.Description</textarea>
                     <label for="floatingTextarea">Description</label>
+                    <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="status" class="form-label">Status</label>
                     <select name="Status" class="form-select" id="status">
                         <option value="true">ON</option>
-                        <option value="false">OFF</option>
+                        @if (!Model.Status)
+                        {
+                            <option value="false" selected>OFF</option>
+                        }
+                        else
+                        {
+                            <option value="false">OFF</option>
+                        }
                     </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

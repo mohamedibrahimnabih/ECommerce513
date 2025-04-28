@@ -43,12 +43,23 @@ namespace ECommerce513.Areas.Admin.Controllers
             ViewBag.categories = categories.ToList();
             ViewData["brands"] = brands.ToList();
 
-            return View();
+            return View(new Product());
         }
 
         [HttpPost]
-        public IActionResult Create(Product product, IFormFile? MainImg)
+        public IActionResult Create(Product product, IFormFile MainImg)
         {
+            //ModelState.Remove("Category");
+            //ModelState.Remove("Brand");
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.categories = _context.Categories.ToList();
+                ViewData["brands"] = _context.Brands.ToList();
+
+                return View(product);
+            }
+
             if (MainImg is not null && MainImg.Length > 0)
             {
                 // Add file to wwwroot
@@ -63,11 +74,16 @@ namespace ECommerce513.Areas.Admin.Controllers
 
                 // Add file Name to product in DB
                 product.MainImg = fileName;
+
+                _context.Products.Add(product);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
             }
 
-            _context.Products.Add(product);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            ViewBag.categories = _context.Categories.ToList();
+            ViewData["brands"] = _context.Brands.ToList();
+
+            return View(product);
         }
 
         public IActionResult Edit(int id)
@@ -89,8 +105,16 @@ namespace ECommerce513.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Product product, IFormFile? MainImg)
+        public IActionResult Edit(Product product, IFormFile MainImg)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.categories = _context.Categories.ToList();
+                ViewData["brands"] = _context.Brands.ToList();
+
+                return View(product);
+            }
+
             var productInDb = _context.Products.AsNoTracking().FirstOrDefault(e => e.Id == product.Id);
 
             if(productInDb is not null)
@@ -122,12 +146,17 @@ namespace ECommerce513.Areas.Admin.Controllers
                 {
                     product.MainImg = productInDb.MainImg;
                 }
+
+                _context.Products.Update(product);
+                _context.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
             }
 
-            _context.Products.Update(product);
-            _context.SaveChanges();
+            ViewBag.categories = _context.Categories.ToList();
+            ViewData["brands"] = _context.Brands.ToList();
 
-            return RedirectToAction(nameof(Index));
+            return View(product);
         }
 
         public IActionResult Delete(int id)
