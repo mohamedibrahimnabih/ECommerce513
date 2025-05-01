@@ -1,3 +1,8 @@
+using ECommerce513.Data;
+using ECommerce513.Repository;
+using ECommerce513.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
+
 namespace ECommerce513
 {
     public class Program
@@ -8,6 +13,14 @@ namespace ECommerce513
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(option =>
+            {
+                option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 
             var app = builder.Build();
 

@@ -1,6 +1,8 @@
 ﻿using ECommerce513.Data;
 using ECommerce513.Models;
 using ECommerce513.Repository;
+using ECommerce513.Repository.IRepository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -10,7 +12,12 @@ namespace ECommerce513.Areas.Admin.Controllers
     public class BrandController : Controller
     {
         //private readonly ApplicationDbContext _context = new();
-        private readonly BrandRepository _brandRepository = new();
+        private readonly IBrandRepository _brandRepository;// = new BrandRepository();
+
+        public BrandController(IBrandRepository brandRepository)
+        {
+            _brandRepository = brandRepository;
+        }
 
         public async Task<IActionResult> Index()
         {

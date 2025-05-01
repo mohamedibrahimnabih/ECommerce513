@@ -1,6 +1,7 @@
 ﻿using ECommerce513.Data;
 using ECommerce513.Models;
 using ECommerce513.Repository;
+using ECommerce513.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -10,8 +11,14 @@ namespace ECommerce513.Areas.Admin.Controllers
     [Area("Admin")]
     public class CategoryController : Controller
     {
+        private readonly ICategoryRepository _categoryRepository;
+
         //private readonly ApplicationDbContext _context = new();
-        private readonly CategoryRepository _categoryRepository = new();
+
+        public CategoryController(ICategoryRepository categoryRepository)
+        {
+            _categoryRepository = categoryRepository;
+        }
 
         public async Task<IActionResult> Index()
         {

@@ -1,12 +1,16 @@
 ﻿using ECommerce513.Data;
 using ECommerce513.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+using ECommerce513.Repository.IRepository;
 
 namespace ECommerce513.Repository
 {
-    public class BrandRepository : Repository<Brand>
+    public class BrandRepository : Repository<Brand>, IBrandRepository
     {
+        private readonly ApplicationDbContext _context;
+
+        public BrandRepository(ApplicationDbContext context) : base(context)
+        {
+            _context = context;
+        }
     }
 }

@@ -1,17 +1,18 @@
 ﻿using ECommerce513.Data;
+using ECommerce513.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace ECommerce513.Repository
 {
-    public class Repository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly ApplicationDbContext _context;
         private readonly DbSet<T> _dbSet;
+        private readonly ApplicationDbContext _context;
 
-        public Repository()
+        public Repository(ApplicationDbContext context)
         {
-            _context = new();
+            _context = context;
             _dbSet = _context.Set<T>(); //_context.Brands, _context.Categories, _context.Products
         }
 
