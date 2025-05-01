@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce513.Repository
 {
-    public class CategoryRepository : Repository<Category>
+    public class BrandRepository : Repository<Brand>
     {
     }
 }

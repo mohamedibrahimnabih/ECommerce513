@@ -13,7 +13,6 @@ namespace ECommerce513.Areas.Admin.Controllers
         //private readonly ApplicationDbContext _context = new();
         private readonly CategoryRepository _categoryRepository = new();
 
-
         public async Task<IActionResult> Index()
         {
             var categories = await _categoryRepository.GetAsync();
