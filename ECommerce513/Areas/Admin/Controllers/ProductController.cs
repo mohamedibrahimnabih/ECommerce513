@@ -4,6 +4,7 @@ using ECommerce513.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace ECommerce513.Areas.Admin.Controllers
 {
@@ -15,7 +16,7 @@ namespace ECommerce513.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var products = _context.Products
-                .Include(e => e.Category)
+                .Include(e=> e.Category)
                 .Include(e => e.Brand)
                 .Select(e => new ProductWithBrandNameWithCategoryNameVM()
                 {
@@ -52,7 +53,7 @@ namespace ECommerce513.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Product product, IFormFile MainImg)
+        public async Task<IActionResult> Create(Product product, IFormFile MainImg)
         {
             //ModelState.Remove("Category");
             //ModelState.Remove("Brand");
@@ -74,14 +75,14 @@ namespace ECommerce513.Areas.Admin.Controllers
 
                 using (var stream = System.IO.File.Create(path))
                 {
-                    MainImg.CopyTo(stream);
+                    await MainImg.CopyToAsync(stream);
                 }
 
                 // Add file Name to product in DB
                 product.MainImg = fileName;
 
-                _context.Products.Add(product);
-                _context.SaveChanges();
+                await _context.Products.AddAsync(product);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
