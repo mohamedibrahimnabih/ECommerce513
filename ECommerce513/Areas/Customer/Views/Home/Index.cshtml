@@ -5,6 +5,16 @@
     var discountLimit = 60;
 }
 
+@section Scripts {
+    @if (TempData["Notification"] is not null)
+    {
+        <script>
+            toastr.success('@TempData["Notification"]')
+        </script>
+    }
+}
+
+
 <!-- Header-->
 <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
