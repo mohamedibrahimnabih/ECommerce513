@@ -3,6 +3,7 @@ using ECommerce513.Models;
 using ECommerce513.Repository;
 using ECommerce513.Repository.IRepository;
 using ECommerce513.Utility;
+using ECommerce513.Utility.DBInitilizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -26,13 +27,16 @@ namespace ECommerce513
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequiredUniqueChars = 0;
-                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedEmail = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
             builder.Services.AddTransient<IEmailSender, EmailSender>();
+            builder.Services.AddScoped<IDBInitilizer, DBInitilizer>();
 
             var app = builder.Build();
 
@@ -49,11 +53,19 @@ namespace ECommerce513
 
             app.UseAuthorization();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbInitializer = scope.ServiceProvider.GetRequiredService<IDBInitilizer>();
+                dbInitializer.Initilize();
+            }
+
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
+
+            //app.Services.GetService<IDBInitilizer>().Initilize();
 
             app.Run();
         }

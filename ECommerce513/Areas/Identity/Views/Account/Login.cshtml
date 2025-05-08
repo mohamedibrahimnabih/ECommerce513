@@ -30,10 +30,15 @@
                     </select>
                     <span asp-validation-for="RememberMe" class="text-danger"></span>
                 </div>
-                <button type="submit" class="btn btn-primary mb-5">Login</button>
+                <button type="submit" class="btn btn-primary mb-3">Login</button>
             </form>
-            <a href="/Identity/Account/ResendEmail">Resend Confirmation Email</a><br />
-            <a href="/Identity/Account/Register">Register</a>
+            <div class="row mb-5">
+                <div class="col-12">
+                    <a href="/Identity/Account/ResendEmail">Resend Confirmation Email</a><br />
+                    <a href="/Identity/Account/ForgetPassword">Forget Password</a><br />
+                    <a href="/Identity/Account/Register">Register</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

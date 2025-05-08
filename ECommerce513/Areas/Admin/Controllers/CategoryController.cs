@@ -2,6 +2,8 @@
 using ECommerce513.Models;
 using ECommerce513.Repository;
 using ECommerce513.Repository.IRepository;
+using ECommerce513.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -9,6 +11,7 @@ using System.Threading.Tasks;
 namespace ECommerce513.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = $"{SD.SuperAdmin},{SD.Admin}")]
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;

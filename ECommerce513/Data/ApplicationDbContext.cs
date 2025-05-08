@@ -24,7 +24,7 @@ namespace ECommerce513.Data
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=ECommerce513;Integrated Security=True;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=ECommerce513-2;Integrated Security=True;TrustServerCertificate=True");
         }
 
     }

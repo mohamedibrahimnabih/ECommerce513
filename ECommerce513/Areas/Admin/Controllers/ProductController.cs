@@ -1,6 +1,8 @@
 ﻿using ECommerce513.Data;
 using ECommerce513.Models;
 using ECommerce513.Models.ViewModels;
+using ECommerce513.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +11,7 @@ using System.Threading.Tasks;
 namespace ECommerce513.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = $"{SD.SuperAdmin},{SD.Admin},{SD.Company}")]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context = new();
