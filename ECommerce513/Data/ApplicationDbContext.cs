@@ -14,6 +14,9 @@ namespace ECommerce513.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItems> OrderItems { get; set; }
 
         // Deprecated
         public ApplicationDbContext()
@@ -24,7 +27,7 @@ namespace ECommerce513.Data
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=ECommerce513-2;Integrated Security=True;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=ECommerce513;Integrated Security=True;TrustServerCertificate=True");
         }
 
     }

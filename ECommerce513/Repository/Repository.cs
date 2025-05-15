@@ -2,6 +2,7 @@
 using ECommerce513.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace ECommerce513.Repository
 {
@@ -104,6 +105,22 @@ namespace ECommerce513.Repository
             Expression<Func<T, object>>[]? includes = null, bool tracked = true)
         {
             return GetAsync(expression, includes, tracked).GetAwaiter().GetResult().FirstOrDefault();
+        }
+
+        public async Task<bool> CommitAsync()
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+
+                return false;
+            }
         }
 
     }

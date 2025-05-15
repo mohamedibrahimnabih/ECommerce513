@@ -17,5 +17,7 @@ namespace ECommerce513.Repository.IRepository
 
         T? GetOne(Expression<Func<T, bool>>? expression = null,
             Expression<Func<T, object>>[]? includes = null, bool tracked = true);
+
+        Task<bool> CommitAsync();
     }
 }

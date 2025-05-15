@@ -4,6 +4,7 @@ using ECommerce513.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce513.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250515185509_EditOrderModelAddSessionIdProps")]
+    partial class EditOrderModelAddSessionIdProps
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,9 +175,11 @@ namespace ECommerce513.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CarrierId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CarrierName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OrderDate")
@@ -184,6 +189,7 @@ namespace ECommerce513.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("SessionId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ShippedDate")
@@ -196,6 +202,7 @@ namespace ECommerce513.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("TransctionId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

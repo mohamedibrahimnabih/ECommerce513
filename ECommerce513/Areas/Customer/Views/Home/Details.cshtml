@@ -10,7 +10,7 @@
                 {
                     <div class="small mb-1"><span class="badge text-bg-danger">Hurry Up! last item!</span></div>
                 }
-                else if(@Model.Product.Quantity > 1 && @Model.Product.Quantity < 10)
+                else if (@Model.Product.Quantity > 1 && @Model.Product.Quantity < 10)
                 {
                     <div class="small mb-1"><span class="badge text-bg-warning">Quantity: @Model.Product.Quantity</span></div>
                 }
@@ -25,11 +25,15 @@
                 </div>
                 <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem quidem modi. Nam sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis delectus ipsam minima ea iste laborum vero?</p>
                 <div class="d-flex">
-                    <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                    <button class="btn btn-outline-dark flex-shrink-0" type="button">
-                        <i class="bi-cart-fill me-1"></i>
-                        Add to cart
-                    </button>
+                    <form asp-action="AddToCart" asp-controller="Cart" asp-area="Customer">
+                        <div asp-validation-summary="All"></div>
+                        <input type="hidden" name="productId" value="@Model.Product.Id" />
+                        <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" style="max-width: 3rem" name="count" />
+                        <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Add to cart
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -182,3 +186,7 @@
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial">
+    }

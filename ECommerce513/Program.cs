@@ -7,6 +7,7 @@ using ECommerce513.Utility.DBInitilizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 namespace ECommerce513
 {
@@ -30,10 +31,18 @@ namespace ECommerce513
                 options.SignIn.RequireConfirmedEmail = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
+            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+
+
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IBrandRepository, BrandRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+            builder.Services.AddScoped<ICartRepository, CartRepository>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 
             builder.Services.AddTransient<IEmailSender, EmailSender>();
             builder.Services.AddScoped<IDBInitilizer, DBInitilizer>();
